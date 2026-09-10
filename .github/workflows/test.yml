@@ -52,7 +52,7 @@ jobs:
         apt-get -o Acquire::Check-Valid-Until=false -o Acquire::Retries=3 update && \
         apt-get install -y cmake gcc g++ make perl
     - name: "Checkout openssl"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         repository: "openssl/openssl"
         ref: ${{ matrix.release.openssl-branch }}
@@ -71,7 +71,7 @@ jobs:
       run: |
         make install_sw
     - name: "Checkout perftools"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         path: "perftools"
     - name: "Config perftools build with -DDEBUG"
@@ -148,7 +148,7 @@ jobs:
         apt-get update
         apt-get install -y cmake gcc g++ make perl
     - name: "Checkout openssl"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         repository: "openssl/openssl"
         ref: ${{ matrix.release.openssl-branch }}
@@ -167,7 +167,7 @@ jobs:
       run: |
         make install_sw
     - name: "Checkout perftools"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         path: "perftools"
     - name: "Config perftools build with -DDEBUG"
@@ -245,7 +245,7 @@ jobs:
         run: |
           sudo pkg install -y cmake gcc perl5
     - name: "Checkout openssl"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         repository: "openssl/openssl"
         ref: ${{ matrix.release.openssl-branch }}
@@ -279,7 +279,7 @@ jobs:
           cd openssl
           make install_sw
     - name: "Checkout perftools"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         path: "perftools"
     - name: "Config perftools build with -DDEBUG"
@@ -383,7 +383,7 @@ jobs:
         choco install nasm
         "C:\Program Files\NASM" | Out-File -FilePath "$env:GITHUB_PATH" -Append
     - name: "Checkout openssl"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         repository: "openssl/openssl"
         ref: ${{ matrix.release.openssl-branch }}
@@ -402,7 +402,7 @@ jobs:
         call "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         nmake
     - name: "Checkout perftools"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         path: "perftools"
     - name: "Config perftools build with -DDEBUG"
@@ -472,7 +472,7 @@ jobs:
     runs-on: "macos-latest"
     steps:
     - name: "Checkout openssl"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         repository: "openssl/openssl"
         ref: ${{ matrix.release.openssl-branch }}
@@ -491,7 +491,7 @@ jobs:
       run: |
         make install_sw
     - name: "Checkout perftools"
-      uses: "actions/checkout@v5"
+      uses: "actions/checkout@v7"
       with:
         path: "perftools"
     - name: "Config perftools build with -DDEBUG"
