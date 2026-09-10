@@ -349,41 +349,51 @@ jobs:
             cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;"',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: false,
+            z7-patch: "0001-Windows-Use-Z7-compiler-flag-to-enable-parallel-buil.patch",
           }, {
             openssl-branch: "openssl-3.5",
             cmakeopts: '',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: false,
+            z7-patch: "0001-Windows-Use-Z7-compiler-flag-to-enable-parallel-buil.patch",
           }, {
             openssl-branch: "openssl-3.6",
             cmakeopts: '',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
+            z7-patch: "0001-Windows-Use-Z7-compiler-flag-to-enable-parallel-buil.patch",
           }, {
             openssl-branch: "openssl-4.0",
             cmakeopts: '',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
+            z7-patch: "0001-Windows-Use-Z7-compiler-flag-to-enable-parallel-buil.patch",
           }, {
             openssl-branch: "openssl-4.1",
             cmakeopts: '',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
+            z7-patch: '',
           }, {
             openssl-branch: "master",
             cmakeopts: '',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
+            z7-patch: '',
           }
         ]
     runs-on: "windows-latest"
     steps:
+    - name: "Checkout perftools"
+      uses: "actions/checkout@v7"
+      with:
+        path: "perftools"
     - name: "Install nasm"
       if: github.repository == 'openssl/perftools'
       run: |
         $installer = "nasm-3.01-installer-x64.exe"
         Invoke-WebRequest -Uri "https://openssl-library.org/ci-deps/$installer" -OutFile $installer
-        $expected = "7881e9febc8b6558581041019b7890f109bef0694d93ed82c9589794c7b5a600"
+        $expected = (Get-Content "$env:GITHUB_WORKSPACE\perftools\.github\ci-deps.json" -Raw | ConvertFrom-Json).$installer
         $actual = (Get-FileHash $installer -Algorithm SHA256).Hash
         if ($actual -ne $expected) { throw "SHA256 mismatch for $installer (expected $expected, got $actual)" }
         Start-Process -FilePath ".\$installer" -ArgumentList '/S' -Wait
@@ -395,6 +405,22 @@ jobs:
         Invoke-WebRequest -Uri "https://www.nasm.us/pub/nasm/releasebuilds/3.01/win64/$installer" -OutFile $installer
         Start-Process -FilePath ".\$installer" -ArgumentList '/S' -Wait
         "C:\Program Files\NASM" | Out-File -FilePath "$env:GITHUB_PATH" -Append
+    - name: "Install jom"
+      if: github.repository == 'openssl/perftools'
+      run: |
+        mkdir C:\jom
+        Invoke-WebRequest -Uri "https://openssl-library.org/ci-deps/jom-1.1.7.exe" -OutFile C:\jom\jom.exe
+        $expected = (Get-Content "$env:GITHUB_WORKSPACE\perftools\.github\ci-deps.json" -Raw | ConvertFrom-Json).'jom-1.1.7.exe'
+        $actual = (Get-FileHash C:\jom\jom.exe -Algorithm SHA256).Hash
+        if ($actual -ne $expected) { throw "SHA256 mismatch for jom.exe (expected $expected, got $actual)" }
+        "C:\jom" | Out-File -FilePath "$env:GITHUB_PATH" -Append
+    - name: "Install jom (forks)"
+      if: github.repository != 'openssl/perftools'
+      run: |
+        mkdir C:\jom
+        Invoke-WebRequest -Uri "https://download.qt.io/official_releases/jom/jom_1_1_7.zip" -OutFile C:\jom\jom.zip
+        Expand-Archive -Path C:\jom\jom.zip -DestinationPath C:\jom
+        "C:\jom" | Out-File -FilePath "$env:GITHUB_PATH" -Append
     - name: "Checkout openssl"
       uses: "actions/checkout@v7"
       with:
@@ -402,6 +428,11 @@ jobs:
         ref: ${{ matrix.release.openssl-branch }}
         fetch-depth: 1
         path: "openssl"
+    - name: "Apply the /Z7 parallel-build patch to openssl"
+      if: ${{ matrix.release.z7-patch != '' }}
+      working-directory: ".\\openssl"
+      run: |
+        git apply -C1 --verbose "$env:GITHUB_WORKSPACE\perftools\patches\${{ matrix.release.z7-patch }}"
     - name: "Config openssl build"
       working-directory: ".\\openssl"
       shell: cmd
@@ -413,11 +444,7 @@ jobs:
       shell: cmd
       run: |
         call "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        nmake
-    - name: "Checkout perftools"
-      uses: "actions/checkout@v7"
-      with:
-        path: "perftools"
+        jom /j4 /S
     - name: "Config perftools build with -DDEBUG"
       if: ${{ matrix.release.has-ssl_poll_perf }}
       working-directory: ".\\perftools\\source"
