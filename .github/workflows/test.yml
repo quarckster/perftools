@@ -11,21 +11,6 @@ jobs:
       matrix:
         release: [
           {
-            openssl-branch: "openssl-3.0",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;"',
-            configopts: 'no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.2",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;"',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.3",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;"',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
             openssl-branch: "openssl-3.4",
             cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;"',
             configopts: 'no-apps no-tests',
@@ -37,6 +22,16 @@ jobs:
             has-ssl_poll_perf: false,
           }, {
             openssl-branch: "openssl-3.6",
+            cmakeopts: '',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "openssl-4.0",
+            cmakeopts: '',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "openssl-4.1",
             cmakeopts: '',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
@@ -112,21 +107,6 @@ jobs:
       matrix:
         release: [
           {
-            openssl-branch: "openssl-3.0",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D OPENSSL_VERSION=3.0',
-            configopts: 'no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.2",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D OPENSSL_VERSION=3.2',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.3",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D OPENSSL_VERSION=3.3',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
             openssl-branch: "openssl-3.4",
             cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D OPENSSL_VERSION=3.4',
             configopts: 'no-apps no-tests',
@@ -142,8 +122,18 @@ jobs:
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
           }, {
-            openssl-branch: "master",
+            openssl-branch: "openssl-4.0",
             cmakeopts: '-D OPENSSL_VERSION=4.0',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "openssl-4.1",
+            cmakeopts: '-D OPENSSL_VERSION=4.1',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "master",
+            cmakeopts: '-D OPENSSL_VERSION=4.2',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
           }
@@ -213,21 +203,6 @@ jobs:
       matrix:
         release: [
           {
-            openssl-branch: "openssl-3.0",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D "run_handshake_pool_size=handshake;;;-o 4"',
-            configopts: 'no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.2",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D "run_handshake_pool_size=handshake;;;-o 4"',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.3",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D "run_handshake_pool_size=handshake;;;-o 4"',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
             openssl-branch: "openssl-3.4",
             cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D "run_handshake_pool_size=handshake;;;-o 4"',
             configopts: 'no-apps no-tests',
@@ -239,6 +214,16 @@ jobs:
             has-ssl_poll_perf: false,
           }, {
             openssl-branch: "openssl-3.6",
+            cmakeopts: '-D "run_handshake_pool_size=handshake;;;-o 4"',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "openssl-4.0",
+            cmakeopts: '-D "run_handshake_pool_size=handshake;;;-o 4"',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "openssl-4.1",
             cmakeopts: '-D "run_handshake_pool_size=handshake;;;-o 4"',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
@@ -360,21 +345,6 @@ jobs:
       matrix:
         release: [
           {
-            openssl-branch: "openssl-3.0",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;"',
-            configopts: 'no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.2",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;"',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.3",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;"',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
             openssl-branch: "openssl-3.4",
             cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;"',
             configopts: 'no-apps no-tests',
@@ -386,6 +356,16 @@ jobs:
             has-ssl_poll_perf: false,
           }, {
             openssl-branch: "openssl-3.6",
+            cmakeopts: '',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "openssl-4.0",
+            cmakeopts: '',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "openssl-4.1",
             cmakeopts: '',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
@@ -458,21 +438,6 @@ jobs:
       matrix:
         release: [
           {
-            openssl-branch: "openssl-3.0",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D "run_handshake_pool_size=handshake;;;-o 4"',
-            configopts: 'no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.2",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D "run_handshake_pool_size=handshake;;;-o 4"',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
-            openssl-branch: "openssl-3.3",
-            cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D "run_handshake_pool_size=handshake;;;-o 4"',
-            configopts: 'no-apps no-tests',
-            has-ssl_poll_perf: false,
-          }, {
             openssl-branch: "openssl-3.4",
             cmakeopts: '-D "run_newrawkey_algos=newrawkey;-a;x25519" -D "run_evp_fetch_pqs=evp_fetch;;" -D "run_handshake_pool_size=handshake;;;-o 4"',
             configopts: 'no-apps no-tests',
@@ -484,6 +449,16 @@ jobs:
             has-ssl_poll_perf: false,
           }, {
             openssl-branch: "openssl-3.6",
+            cmakeopts: '-D "run_handshake_pool_size=handshake;;;-o 4"',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "openssl-4.0",
+            cmakeopts: '-D "run_handshake_pool_size=handshake;;;-o 4"',
+            configopts: 'no-apps no-tests',
+            has-ssl_poll_perf: true,
+          }, {
+            openssl-branch: "openssl-4.1",
             cmakeopts: '-D "run_handshake_pool_size=handshake;;;-o 4"',
             configopts: 'no-apps no-tests',
             has-ssl_poll_perf: true,
