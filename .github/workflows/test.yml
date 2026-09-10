@@ -378,9 +378,22 @@ jobs:
         ]
     runs-on: "windows-latest"
     steps:
-    - name: "Install prerequisites"
+    - name: "Install nasm"
+      if: github.repository == 'openssl/perftools'
       run: |
-        choco install nasm
+        $installer = "nasm-3.01-installer-x64.exe"
+        Invoke-WebRequest -Uri "https://openssl-library.org/ci-deps/$installer" -OutFile $installer
+        $expected = "7881e9febc8b6558581041019b7890f109bef0694d93ed82c9589794c7b5a600"
+        $actual = (Get-FileHash $installer -Algorithm SHA256).Hash
+        if ($actual -ne $expected) { throw "SHA256 mismatch for $installer (expected $expected, got $actual)" }
+        Start-Process -FilePath ".\$installer" -ArgumentList '/S' -Wait
+        "C:\Program Files\NASM" | Out-File -FilePath "$env:GITHUB_PATH" -Append
+    - name: "Install nasm (forks)"
+      if: github.repository != 'openssl/perftools'
+      run: |
+        $installer = "nasm-3.01-installer-x64.exe"
+        Invoke-WebRequest -Uri "https://www.nasm.us/pub/nasm/releasebuilds/3.01/win64/$installer" -OutFile $installer
+        Start-Process -FilePath ".\$installer" -ArgumentList '/S' -Wait
         "C:\Program Files\NASM" | Out-File -FilePath "$env:GITHUB_PATH" -Append
     - name: "Checkout openssl"
       uses: "actions/checkout@v7"
